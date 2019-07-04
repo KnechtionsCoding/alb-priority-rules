@@ -6,7 +6,7 @@ import time
 import json
 from botocore.exceptions import ClientError
 
-def describe_albs(alb_name):
+def describe_albs(alb, alb_name):
     elb = boto3.client('elbv2')
     response = elb.describe_load_balancers(
         Names = [
@@ -16,7 +16,7 @@ def describe_albs(alb_name):
     alb_arn = response['LoadBalancers'][0]['LoadBalancerArn']
     return alb_arn
 
-def describe_listeners(alb_arn):
+def describe_listeners(alb, alb_arn):
     listener = boto3.client('elbv2')
     response = listener.describe_listeners(
         LoadBalancerArn = alb_arn
@@ -25,7 +25,7 @@ def describe_listeners(alb_arn):
 
     return listener_arn
 
-def get_alb_rules(listener_arn):
+def get_alb_rules(alb, listener_arn):
     listener = boto3.client('elbv2')
     response = listener.describe_listeners(
         LoadBalancerArn = listener_arn
